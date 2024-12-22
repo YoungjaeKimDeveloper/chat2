@@ -1,3 +1,4 @@
+import { generateToken } from "../../lib/utils.js";
 import { User } from "../../models/User.js";
 import bcrypt from "bcryptjs";
 
@@ -22,10 +23,15 @@ export const signup = async (req, res) => {
     const existedUser = await User.findOne({ email });
     if (existedUser) {
       return res.status(409).json({ message: "Email Existed" });
+    } else {
+      // auth를 위해 토큰 발행해주기
+
+      const hashPassword = await bcrypt.hash(password, 10);
+      const newUser = new User({ email, fullName, password: hashPassword });
+      generateToken(newUser._id, res);
+      await newUser.save();
     }
-    const hashPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ email, fullName, password: hashPassword });
-    await newUser.save();
+
     return res.status(201).json({
       success: true,
       message: "Succeed to create new User",
@@ -36,9 +42,9 @@ export const signup = async (req, res) => {
     });
   } catch (error) {
     console.error("ERROR DURING CREATING USER", error.message);
-    return res.status(400).json({
+    return res.status(500).json({
       success: false,
-      message: "Failed to create new User",
+      message: "Failed to create new User INTERNAL SERVER ERROR",
     });
   }
 };
@@ -63,10 +69,18 @@ export const login = async (req, res) => {
       .status(400)
       .json({ success: false, message: "PASSWORD DOESN'T MATCH" });
   }
-
+  generateToken(user.id, res);
   return res.status(200).json({ user: user });
 };
 
 export const logout = (req, res) => {
-  return res.json({ message: "signup" });
+  try {
+    res.cookie("jwt", "", {
+      maxAge: 0,
+    });
+    return res.json({ message: "logout Successfully" });
+  } catch (error) {
+    console.log("FAILED TO LOGOUT", error.message);
+    return res.status(400).json({ message: "FAILED TO LOGOUT" });
+  }
 };
