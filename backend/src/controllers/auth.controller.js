@@ -1,3 +1,4 @@
+import cloudinary from "../../lib/cloudinary.js";
 import { generateToken } from "../../lib/utils.js";
 import { User } from "../../models/User.js";
 import bcrypt from "bcryptjs";
@@ -82,5 +83,37 @@ export const logout = (req, res) => {
   } catch (error) {
     console.log("FAILED TO LOGOUT", error.message);
     return res.status(400).json({ message: "FAILED TO LOGOUT" });
+  }
+};
+
+export const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    const userID = req.user._id;
+
+    if (!profilePic) {
+      return res.status(400).json({ message: "Profile pic is required" });
+    }
+    // 사진 cloudinary에 올려주기
+    const result = await cloudinary.uploader.upload(profilePic);
+    const updateUser = await User.findByIdAndUpdate(
+      userID,
+      { profilePic: result.secure_url },
+      { new: true }
+    );
+    return res.status(200).json({ success: true, updateUser });
+  } catch (error) {
+    console.error("ERROR IN UPDATE PROFILE", error.message);
+    return res
+      .status(500)
+      .json({ message: "INTERNAL SERVER ERROR FROM = [updateProfile]" });
+  }
+};
+export const checkAuth = async (req, res) => {
+  try {
+    return res.status(200).json({ user: req.user });
+  } catch (error) {
+    console.error("ERROR IN checkAuth: ", error.message);
+    return res.status(400).json({ message: "FAILED TO CHECK AUTH" });
   }
 };
