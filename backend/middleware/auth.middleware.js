@@ -26,7 +26,7 @@ export const verifyToken = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    console.error("FROM AUTH ProtectRoute", error.message);
+    console.error("FAIL TO VERIFY TOKEN", error.message);
   }
 };
 // 56:3P

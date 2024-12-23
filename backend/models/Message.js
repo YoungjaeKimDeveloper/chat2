@@ -4,19 +4,19 @@ const MessageSchema = new mongoose.Schema(
   {
     text: {
       type: String,
-      required: true,
     },
     image: {
       type: String,
-      required: true,
     },
     senderid: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
     receiverid: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true,
     },
   },
   {
