@@ -94,6 +94,7 @@ export const updateProfile = async (req, res) => {
     if (!profilePic) {
       return res.status(400).json({ message: "Profile pic is required" });
     }
+
     // 사진 cloudinary에 올려주기
     const result = await cloudinary.uploader.upload(profilePic);
     const updateUser = await User.findByIdAndUpdate(

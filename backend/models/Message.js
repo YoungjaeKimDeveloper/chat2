@@ -2,8 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const MessageSchema = new mongoose.Schema(
   {
-    text: {
-      type: String,
+    text: {w
     },
     image: {
       type: String,
