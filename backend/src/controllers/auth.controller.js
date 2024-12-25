@@ -107,7 +107,9 @@ export const updateProfile = async (req, res) => {
     console.error("ERROR IN UPDATE PROFILE", error.message);
     return res
       .status(500)
-      .json({ message: "INTERNAL SERVER ERROR FROM = [updateProfile]" });
+      .json({
+        message: "INTERNAL SERVER ERROR FROM = [updateProfile]" + error.message,
+      });
   }
 };
 export const checkAuth = async (req, res) => {
