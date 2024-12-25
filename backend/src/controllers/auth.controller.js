@@ -31,16 +31,16 @@ export const signup = async (req, res) => {
       const newUser = new User({ email, fullName, password: hashPassword });
       generateToken(newUser._id, res);
       await newUser.save();
+      return res.status(201).json({
+        success: true,
+        message: "Succeed to create new User",
+        newUser: {
+          email: newUser.email,
+          fullName: newUser.fullName,
+          _id: newUser._id, // 필요한 경우 추가
+        },
+      });
     }
-
-    return res.status(201).json({
-      success: true,
-      message: "Succeed to create new User",
-      newUser: {
-        email,
-        fullName,
-      },
-    });
   } catch (error) {
     console.error("ERROR DURING CREATING USER", error.message);
     return res.status(500).json({
