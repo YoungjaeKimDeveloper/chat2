@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 export const useAuthStore = create((set) => ({
   // STATE
   authUser: null,
+  onlineUsers: [],
   // STATE - LOADING
   isCheckngAuth: false,
   isSigningUp: false,
@@ -70,7 +71,9 @@ export const useAuthStore = create((set) => ({
     set({ isUpdatingProfile: true });
     try {
       console.log(data);
+      // 서버로 Request 보내고
       const res = await axiosInstance.put("/auth/update-profile", data);
+      // 서버에서 Response 받아서 authUpdate
       set({ authUser: res.data.updateUser });
       toast.success("PROFILE UPDATED");
     } catch (error) {

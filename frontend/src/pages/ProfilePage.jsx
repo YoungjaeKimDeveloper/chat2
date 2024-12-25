@@ -5,20 +5,21 @@ const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
 
   const handleImageUpload = async (e) => {
+    const reader = new FileReader();
     e.preventDefault();
     // 배열의 첫번쨰가 user가 선택한 파일
     const file = e.target.files[0];
     if (!file) return;
-    // 리더기 만들기 
-    const reader = new FileReader();
     // 파일을 URL로 바꿔줌
     reader.readAsDataURL(file);
-    // 파일을 전부 읽고다면 다음에 해줄작업
+    // AFTER THAT ....
     reader.onload = async () => {
+      // 받은 URL 인코딩 해주기
       const base64Image = reader.result;
       await updateProfile({ profilePic: base64Image });
     };
   };
+
   return (
     <div className="h-screen pt-20">
       <div className="max-w-2xl mx-auto p-4 py-8">

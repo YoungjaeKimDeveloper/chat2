@@ -20,7 +20,6 @@ export const getUsersForSidebar = async (req, res) => {
         .status(400)
         .json({ success: false, message: "FAIL TO GET USERS" });
     }
-    console.info("TESTER: ", users);
     return res.status(200).json({ users });
   } catch (error) {
     return res.status(400).json({
