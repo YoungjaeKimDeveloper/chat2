@@ -32,14 +32,17 @@ export const getUsersForSidebar = async (req, res) => {
 export const getMessages = async (req, res) => {
   try {
     const { id: partnerId } = req.params;
+    console.log("Partner ID", partnerId);
     const senderId = req.user._id;
+    console.log("Sender ID", senderId);
     // Get the conversation
     const messages = await Message.find({
       $or: [
-        { senderId: senderId, receiverid: partnerId },
-        { senderId: partnerId, receiverid: senderId },
+        { senderid: senderId, receiverid: partnerId },
+        { senderid: partnerId, receiverid: senderId },
       ],
     });
+
     return res.status(200).json({ messages: messages });
   } catch (error) {
     console.error("ERROR IN getMessages: ", error.message);
