@@ -10,7 +10,7 @@ import ProfilePage from "./pages/ProfilePage";
 import { useAuthStore } from "./store/useAuthStore";
 
 const App = () => {
-  const { authUser, checkAuth, isCheckngAuth } = useAuthStore();
+  const { authUser, checkAuth, isCheckngAuth, onlineUsers } = useAuthStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);

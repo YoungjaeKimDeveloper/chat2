@@ -22,7 +22,7 @@ export const useChatStore = create((set, get) => ({
     set({ isUsersLoading: true });
     try {
       const responseFromServer = await axiosInstance.get("/message/users");
-      console.log("FROM getUsers:  ", responseFromServer);
+
       set({ users: responseFromServer.data.users });
       toast.success("LOAD THE USERS LIST SUCCESSFULLY");
     } catch (error) {

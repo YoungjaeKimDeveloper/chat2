@@ -12,7 +12,7 @@ export const getUsersForSidebar = async (req, res) => {
     }
     const users = await User.find({
       _id: {
-        $ne: currentUser._Id,
+        $ne: currentUser._id,
       },
     }).select("-password");
     if (!users) {
@@ -32,9 +32,7 @@ export const getUsersForSidebar = async (req, res) => {
 export const getMessages = async (req, res) => {
   try {
     const { id: partnerId } = req.params;
-    console.log("Partner ID", partnerId);
     const senderId = req.user._id;
-    console.log("Sender ID", senderId);
     // Get the conversation
     const messages = await Message.find({
       $or: [
